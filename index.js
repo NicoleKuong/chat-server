@@ -2,17 +2,13 @@ const express = require("express");
 // const cors = require("cors");
 const app = express();
 const port = 4000;
-// const Event = require("./event/model");
-// const eventRouter = require("./event/router");
-// const bodyParser = require("body-parser");
+const messageRouter = require("./message/router");
 
 // const middleware = cors();
 // app.use(middleware);
 
-// const parserMiddleware = bodyParser.json();
-// app.use(parserMiddleware);
-
-// app.use(eventRouter);
-// app.get("/", (req, res) => res.send("Hello World!"));
+const jsonMiddleware = express.json();
+app.use(jsonMiddleware);
+app.use(messageRouter);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
