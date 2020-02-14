@@ -36,6 +36,9 @@ router.post("/message", async (req, res, next) => {
     const { text } = body;
     const entity = { text };
     const message = await Message.create(entity);
+    const json = JSON.stringify(message); //serialize the data
+
+    stream.send(json);
     res.send(message);
     console.log("request.body test", message.dataValues);
   } catch (error) {
