@@ -1,10 +1,18 @@
 const express = require("express");
-
+const SSE = require("json-sse");
 const { Router } = express;
 const Message = require("./model");
 
 const router = new Router();
+const stream = new SSE(); // a list of client
+//SSE a request that doesn't end, keep getting request and response
+//get on the stream
 
+router.get("/stream", async (req, res, next) => {
+  // prepare the data, next client connect then send it to the stream
+  stream.updateInit("test");
+  stream.init(req, res);
+});
 //Do not create get endpoint in the game project
 router.get("/message", async (req, res, next) => {
   try {
