@@ -1,10 +1,11 @@
 const express = require("express");
 
-const Message = require("./model");
+const Channel = require("./model");
 
 function factory(stream) {
   const { Router } = express;
   const router = new Router();
+
   // const stream = new SSE(); // a list of client
   //SSE a request that doesn't end, keep getting request and response
   //get on the stream
@@ -19,23 +20,23 @@ function factory(stream) {
   //   }
   // });
 
-  router.post("/message", async (req, res, next) => {
+  router.post("/channel", async (req, res, next) => {
     try {
       const { body } = req;
-      const { text } = body;
-      const entity = { text };
-      const message = await Message.create(entity);
+      const { name } = body;
+      const entity = { name };
+      const channel = await Channel.create(entity);
 
       const action = {
-        type: "ONE_MESSAGE",
-        payload: message
+        type: "ONE_CHANNEL",
+        payload: channel
       }; // return an object
 
       const json = JSON.stringify(action); //serialize the data
 
       stream.send(json);
-      res.send(message);
-      console.log("request.body test", message.dataValues);
+      res.send(channel);
+      console.log("request.body test", channel.dataValues);
     } catch (error) {
       next(error);
     }
