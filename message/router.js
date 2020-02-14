@@ -10,8 +10,15 @@ const stream = new SSE(); // a list of client
 
 router.get("/stream", async (req, res, next) => {
   // prepare the data, next client connect then send it to the stream
-  stream.updateInit("test");
-  stream.init(req, res);
+  try {
+    const messages = await Message.findAll();
+    const json = JSON.stringify(messages); // turn the data into an array before send it to the stream
+    stream.updateInit(json);
+
+    stream.init(req, res);
+  } catch (error) {
+    next(error);
+  }
 });
 //Do not create get endpoint in the game project
 router.get("/message", async (req, res, next) => {
